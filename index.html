@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gift Package Tracker</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ===== PASTE PART 2 CSS HERE ===== */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#ffe4f7,#efe5ff);
+padding:30px;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+}
+
+.header{
+text-align:center;
+margin-bottom:25px;
+}
+
+.header h1{
+color:#7b1fa2;
+}
+
+.header p{
+color:#666;
+margin-top:8px;
+}
+
+.tracking-card{
+
+background:#fff;
+
+border-radius:20px;
+
+padding:30px;
+
+box-shadow:0 15px 35px rgba(0,0,0,.12);
+
+}
+
+.tracking-id{
+
+text-align:center;
+
+margin-bottom:20px;
+
+}
+
+.tracking-id h2{
+
+color:#8e24aa;
+
+margin-top:5px;
+
+}
+
+.recipient{
+
+background:#faf5ff;
+
+padding:15px;
+
+border-radius:12px;
+
+margin-bottom:30px;
+
+font-size:18px;
+
+}
+
+.progress-container{
+
+margin-top:20px;
+
+}
+
+.progress-bar{
+
+height:10px;
+
+background:#e5e5e5;
+
+border-radius:20px;
+
+overflow:hidden;
+
+margin-bottom:35px;
+
+}
+
+#progressFill{
+
+height:100%;
+
+width:0%;
+
+background:linear-gradient(90deg,#ec407a,#8e24aa);
+
+transition:1.2s;
+
+}
+
+.steps{
+
+display:flex;
+
+justify-content:space-between;
+
+}
+
+.step{
+
+text-align:center;
+
+width:25%;
+
+}
+
+.circle{
+
+width:55px;
+
+height:55px;
+
+border-radius:50%;
+
+background:#ddd;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:25px;
+
+margin:auto;
+
+transition:.5s;
+
+}
+
+.active{
+
+background:#8e24aa;
+
+color:#fff;
+
+box-shadow:0 0 18px rgba(142,36,170,.4);
+
+}
+
+.step p{
+
+margin-top:10px;
+
+font-size:13px;
+
+}
+
+button{
+
+margin-top:40px;
+
+width:100%;
+
+padding:15px;
+
+font-size:18px;
+
+border:none;
+
+background:#8e24aa;
+
+color:#fff;
+
+border-radius:12px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+button:hover{
+
+background:#6a1b9a;
+
+}
+
+#statusBox{
+
+margin-top:25px;
+
+text-align:center;
+
+font-size:22px;
+
+font-weight:600;
+
+color:#8e24aa;
+
+min-height:60px;
+
+}
+
+#birthdayCard{
+
+display:none;
+
+margin-top:35px;
+
+padding:30px;
+
+border-radius:20px;
+
+background:linear-gradient(135deg,#ffb3e6,#d7b3ff);
+
+text-align:center;
+
+animation:pop .8s;
+
+}
+
+#birthdayCard h1{
+
+margin-top:20px;
+
+color:#6a1b9a;
+
+}
+
+#birthdayCard h2{
+
+color:#6a1b9a;
+
+margin-bottom:15px;
+
+}
+
+#birthdayCard p{
+
+margin-top:15px;
+
+font-size:18px;
+
+line-height:1.6;
+
+}
+
+canvas{
+
+position:fixed;
+
+left:0;
+
+top:0;
+
+pointer-events:none;
+
+}
+
+@keyframes pop{
+
+0%{
+
+transform:scale(.5);
+
+opacity:0;
+
+}
+
+100%{
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>📦 Gift Package Tracker</h1>
+<p>Track your surprise gift</p>
+</div>
+
+<div class="tracking-card">
+
+<div class="tracking-id">
+Tracking Number
+<h2>GTX-7845-2026-IN</h2>
+</div>
+
+<div class="recipient">
+Recipient:
+<b>Debasmita Dhar</b>
+</div>
+
+<div class="progress-container">
+
+<div class="progress-bar">
+<div id="progressFill"></div>
+</div>
+
+<div class="steps">
+
+<div class="step">
+<div class="circle active" id="step1">📦</div>
+<p>Packed</p>
+</div>
+
+<div class="step">
+<div class="circle" id="step2">🚚</div>
+<p>Shipped</p>
+</div>
+
+<div class="step">
+<div class="circle" id="step3">🚛</div>
+<p>Out for Delivery</p>
+</div>
+
+<div class="step">
+<div class="circle" id="step4">🎁</div>
+<p>Delivered</p>
+</div>
+
+</div>
+
+</div>
+
+<button id="trackBtn" onclick="trackPackage()">
+Track Package
+</button>
+
+<div id="statusBox"></div>
+
+<div id="birthdayCard">
+
+<h2>🎉 Surprise Delivered!</h2>
+
+<h3>Dear Debasmita Dhar,</h3>
+
+<p>
+Your special surprise has finally reached you! ❤️
+</p>
+
+<p>
+Thank me, for being such an amazing person 🤓.
+</p>
+
+<h1>Happy Birthday! 🎂✨</h1>
+
+</div>
+
+</div>
+
+</div>
+
+<canvas id="confettiCanvas"></canvas>
+
+<script>
+
+/* ===== PASTE PART 3 JAVASCRIPT HERE ===== */
+// =======================
+// Gift Tracker Logic
+// =======================
+
+function trackPackage() {
+
+    const today = new Date();
+
+    // July is month 6 because JavaScript months start from 0
+    const july16 = new Date(today.getFullYear(), 6, 16, 23, 59, 59);
+
+    const progress = document.getElementById("progressFill");
+
+    const step2 = document.getElementById("step2");
+    const step3 = document.getElementById("step3");
+    const step4 = document.getElementById("step4");
+
+    const status = document.getElementById("statusBox");
+
+    const card = document.getElementById("birthdayCard");
+
+    // Reset
+    progress.style.width = "0%";
+    card.style.display = "none";
+
+    step2.classList.remove("active");
+    step3.classList.remove("active");
+    step4.classList.remove("active");
+
+    // Small loading delay
+    status.innerHTML = "Checking latest shipment status...";
+
+    setTimeout(() => {
+
+        // BEFORE OR ON 16 JULY
+        if (today <= july16) {
+
+            progress.style.width = "50%";
+
+            step2.classList.add("active");
+
+            status.innerHTML =
+                "🚚 <b>Your gift is shipped!</b><br><br>Estimated delivery: <b>16 July</b>";
+
+        }
+
+        // AFTER 16 JULY
+        else {
+
+            progress.style.width = "100%";
+
+            step2.classList.add("active");
+            step3.classList.add("active");
+            step4.classList.add("active");
+
+            status.innerHTML =
+                "✅ <b>Delivered to Debasmita Dhar</b>";
+
+            card.style.display = "block";
+
+            startConfetti();
+
+        }
+
+    }, 1200);
+
+}
+
+
+
+// =======================
+// Confetti Animation
+// =======================
+
+function startConfetti(){
+
+const canvas=document.getElementById("confettiCanvas");
+
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+
+canvas.height=window.innerHeight;
+
+const pieces=[];
+
+for(let i=0;i<250;i++){
+
+pieces.push({
+
+x:Math.random()*canvas.width,
+
+y:Math.random()*canvas.height-canvas.height,
+
+r:Math.random()*8+4,
+
+dx:(Math.random()-0.5)*2,
+
+dy:Math.random()*3+2,
+
+color:`hsl(${Math.random()*360},100%,60%)`
+
+});
+
+}
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+pieces.forEach(p=>{
+
+ctx.beginPath();
+
+ctx.fillStyle=p.color;
+
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+
+ctx.fill();
+
+p.x+=p.dx;
+
+p.y+=p.dy;
+
+if(p.y>canvas.height){
+
+p.y=-20;
+
+}
+
+});
+
+requestAnimationFrame(draw);
+
+}
+
+draw();
+
+}
+
+window.addEventListener("resize",()=>{
+
+const canvas=document.getElementById("confettiCanvas");
+
+canvas.width=window.innerWidth;
+
+canvas.height=window.innerHeight;
+
+});
+
+</script>
+
+</body>
+</html>
