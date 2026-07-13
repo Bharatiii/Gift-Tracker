@@ -396,7 +396,7 @@ function trackPackage() {
     const today = new Date();
 
     // July is month 6 because JavaScript months start from 0
-    const july16 = new Date(today.getFullYear(), 6, 16, 23, 59, 59);
+    const july13 = new Date(today.getFullYear(), 6, 13, 23, 59, 59);
 
     const progress = document.getElementById("progressFill");
 
@@ -422,14 +422,14 @@ function trackPackage() {
     setTimeout(() => {
 
         // BEFORE OR ON 16 JULY
-        if (today <= july16) {
+        if (today <= july13) {
 
             progress.style.width = "50%";
 
             step2.classList.add("active");
 
             status.innerHTML =
-                "🚚 <b>Your gift is shipped!</b><br><br>Estimated delivery: <b>16 July</b>";
+                "🚚 <b>Your gift is shipped!</b><br><br>Estimated delivery: <b>13 July</b>";
 
         }
 
