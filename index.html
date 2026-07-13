@@ -395,8 +395,10 @@ function trackPackage() {
 
     const today = new Date();
 
-    // July is month 6 because JavaScript months start from 0
-    const july13 = new Date(today.getFullYear(), 6, 13, 23, 59, 59);
+    // Set the dates
+    const shippedDate = new Date(today.getFullYear(), 6, 11); // 11 July
+    const outForDeliveryDate = new Date(today.getFullYear(), 6, 13, 0, 0, 0); // 13 July
+    const deliveredDate = new Date(today.getFullYear(), 6, 14, 0, 0, 0); // 14 July
 
     const progress = document.getElementById("progressFill");
 
@@ -416,13 +418,12 @@ function trackPackage() {
     step3.classList.remove("active");
     step4.classList.remove("active");
 
-    // Small loading delay
     status.innerHTML = "Checking latest shipment status...";
 
     setTimeout(() => {
 
-        // BEFORE OR ON 16 JULY
-        if (today <= july13) {
+        // Before July 13 → Shipped
+        if (today < outForDeliveryDate) {
 
             progress.style.width = "50%";
 
@@ -433,7 +434,20 @@ function trackPackage() {
 
         }
 
-        // AFTER 16 JULY
+        // On July 13 → Out for Delivery
+        else if (today < deliveredDate) {
+
+            progress.style.width = "75%";
+
+            step2.classList.add("active");
+            step3.classList.add("active");
+
+            status.innerHTML =
+                "🚛 <b>Your gift is Out for Delivery!</b><br><br>Expected to arrive today.";
+
+        }
+
+        // July 14 onwards → Delivered
         else {
 
             progress.style.width = "100%";
@@ -461,79 +475,79 @@ function trackPackage() {
 // Confetti Animation
 // =======================
 
-function startConfetti(){
+function startConfetti() {
 
-const canvas=document.getElementById("confettiCanvas");
+    const canvas = document.getElementById("confettiCanvas");
 
-const ctx=canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
 
-canvas.width=window.innerWidth;
+    canvas.width = window.innerWidth;
 
-canvas.height=window.innerHeight;
+    canvas.height = window.innerHeight;
 
-const pieces=[];
+    const pieces = [];
 
-for(let i=0;i<250;i++){
+    for (let i = 0; i < 250; i++) {
 
-pieces.push({
+        pieces.push({
 
-x:Math.random()*canvas.width,
+            x: Math.random() * canvas.width,
 
-y:Math.random()*canvas.height-canvas.height,
+            y: Math.random() * canvas.height - canvas.height,
 
-r:Math.random()*8+4,
+            r: Math.random() * 8 + 4,
 
-dx:(Math.random()-0.5)*2,
+            dx: (Math.random() - 0.5) * 2,
 
-dy:Math.random()*3+2,
+            dy: Math.random() * 3 + 2,
 
-color:`hsl(${Math.random()*360},100%,60%)`
+            color: `hsl(${Math.random() * 360},100%,60%)`
 
-});
+        });
+
+    }
+
+    function draw() {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        pieces.forEach(p => {
+
+            ctx.beginPath();
+
+            ctx.fillStyle = p.color;
+
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+
+            ctx.fill();
+
+            p.x += p.dx;
+
+            p.y += p.dy;
+
+            if (p.y > canvas.height) {
+
+                p.y = -20;
+
+            }
+
+        });
+
+        requestAnimationFrame(draw);
+
+    }
+
+    draw();
 
 }
 
-function draw(){
+window.addEventListener("resize", () => {
 
-ctx.clearRect(0,0,canvas.width,canvas.height);
+    const canvas = document.getElementById("confettiCanvas");
 
-pieces.forEach(p=>{
+    canvas.width = window.innerWidth;
 
-ctx.beginPath();
-
-ctx.fillStyle=p.color;
-
-ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-
-ctx.fill();
-
-p.x+=p.dx;
-
-p.y+=p.dy;
-
-if(p.y>canvas.height){
-
-p.y=-20;
-
-}
-
-});
-
-requestAnimationFrame(draw);
-
-}
-
-draw();
-
-}
-
-window.addEventListener("resize",()=>{
-
-const canvas=document.getElementById("confettiCanvas");
-
-canvas.width=window.innerWidth;
-
-canvas.height=window.innerHeight;
+    canvas.height = window.innerHeight;
 
 });
 
